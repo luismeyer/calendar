@@ -8,7 +8,7 @@ import StyledComponentsRegistry from "../components/styled/registry";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "Next gen calendar",
+  title: "Next Gen Calendar",
 };
 
 export default function RootLayout({
