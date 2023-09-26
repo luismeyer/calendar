@@ -1,10 +1,13 @@
 "use client";
+import dayjs from "dayjs";
 import { useCallback, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { object, regex, string, Input as ValiInput } from "valibot";
+import { Input as ValiInput, object, regex, string } from "valibot";
 
 import { valibotResolver } from "@hookform/resolvers/valibot";
+import { Cross1Icon } from "@radix-ui/react-icons";
 
+import { createEvent } from "../../api/create-event";
 import { Button } from "../../components/ui/button";
 import {
   Form,
@@ -16,8 +19,6 @@ import {
 } from "../../components/ui/form";
 import { Input } from "../../components/ui/input";
 import { TitleSchema } from "../../lib/event";
-import dayjs from "dayjs";
-import { createEvent } from "../../api/create-event";
 
 const TimeRegex = /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/;
 
@@ -35,11 +36,11 @@ export type FormData = ValiInput<typeof FormSchema>;
 
 type EventInputProps = {
   hour: number;
-  handleSubmit: () => void;
+  close: () => void;
   date: dayjs.Dayjs;
 };
 
-export function EventInput({ hour, handleSubmit, date }: EventInputProps) {
+export function EventInput({ hour, close, date }: EventInputProps) {
   const form = useForm<FormData>({
     resolver: valibotResolver(FormSchema),
     defaultValues: {
@@ -68,9 +69,9 @@ export function EventInput({ hour, handleSubmit, date }: EventInputProps) {
 
       await createEvent({ endDate, startDate, title: data.title });
 
-      handleSubmit();
+      close();
     },
-    [date, handleSubmit]
+    [date, close]
   );
 
   useEffect(() => {
@@ -79,8 +80,12 @@ export function EventInput({ hour, handleSubmit, date }: EventInputProps) {
 
   return (
     <div className="grid gap-4">
-      <div className="space-y-2">
+      <div className="flex justify-between items-center">
         <h4 className="font-medium leading-none">Create Event</h4>
+
+        <button onClick={() => close()}>
+          <Cross1Icon width={16} height={16} />
+        </button>
       </div>
 
       <Form {...form}>

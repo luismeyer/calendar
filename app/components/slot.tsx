@@ -37,7 +37,7 @@ export function Slot({ hour, date }: SlotProps) {
         <EventInput
           date={dayjs(date)}
           hour={hour}
-          handleSubmit={() => setOpen(false)}
+          close={() => setOpen(false)}
         />
       </PopoverContent>
     </Popover>
